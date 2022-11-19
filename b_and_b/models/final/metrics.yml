@@ -1,0 +1,86 @@
+version: 2
+metrics:
+  - name: total_order_count
+    label: count_of_orders
+    model: ref('product_order')
+    description: "Count of Total Orders"
+
+    calculation_method: count_distinct
+    expression: order_id
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, all_time]
+
+    dimensions:
+      - order_id
+      - order_created_at
+      - product_category
+      - product_title
+      - product_variant_sku
+      - product_variant_title
+      - product_variant_style
+      - product_variant_size
+
+  - name: total_gross_revenue
+    label: total_gross_revenue
+    model: ref('product_order')
+    description: "Sum of total line item revenue minus sum of line item discounts"
+
+    calculation_method: sum
+    expression: line_item_gross_revenue
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, all_time]
+
+    dimensions:
+      - order_id
+      - order_created_at
+      - product_category
+      - product_title
+      - product_variant_sku
+      - product_variant_title
+      - product_variant_style
+      - product_variant_size
+
+  - name: total_order_units
+    label: total_order_units
+    model: ref('product_order')
+    description: "sum of order line item quantities"
+
+    calculation_method: sum
+    expression: line_item_quantity
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, all_time]
+
+    dimensions:
+      - order_id
+      - order_created_at
+      - product_category
+      - product_title
+      - product_variant_sku
+      - product_variant_title
+      - product_variant_style
+      - product_variant_size
+
+
+  - name: average_order_value
+    label: average_order_value
+    model: ref('product_order')
+    description: "Average of order subtotals"
+
+    calculation_method: average
+    expression: order_subtotal
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, all_time]
+
+    dimensions:
+      - order_id
+      - order_created_at
+      - product_category
+      - product_title
+      - product_variant_sku
+      - product_variant_title
+      - product_variant_style
+      - product_variant_size

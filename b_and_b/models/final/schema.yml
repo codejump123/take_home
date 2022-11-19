@@ -1,0 +1,13 @@
+
+version: 2
+
+sources:
+  - name: raw
+    description: "source tables"
+    database: data-recruiting
+    schema: ae_data_challenge_v1
+    tables:
+      - name: orders
+      - name: products
+      - name: web_events
+ 
