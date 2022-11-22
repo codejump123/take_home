@@ -12,7 +12,6 @@ metrics:
     time_grains: [day, week, month, all_time]
 
     dimensions:
-      - order_id
       - order_created_at
       - product_category
       - product_title
@@ -33,7 +32,6 @@ metrics:
     time_grains: [day, week, month, all_time]
 
     dimensions:
-      - order_id
       - order_created_at
       - product_category
       - product_title
@@ -54,7 +52,6 @@ metrics:
     time_grains: [day, week, month, all_time]
 
     dimensions:
-      - order_id
       - order_created_at
       - product_category
       - product_title
@@ -76,7 +73,26 @@ metrics:
     time_grains: [day, week, month, all_time]
 
     dimensions:
-      - order_id
+      - order_created_at
+      - product_category
+      - product_title
+      - product_variant_sku
+      - product_variant_title
+      - product_variant_style
+      - product_variant_size
+
+  - name: average_order_units
+    label: average order units
+    model: ref('product_order')
+    description: "Average of units per order"
+
+    calculation_method: average
+    expression: units_in_order
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, all_time]
+
+    dimensions:
       - order_created_at
       - product_category
       - product_title

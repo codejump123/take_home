@@ -20,6 +20,7 @@ select
     o.quantity                      as line_item_quantity,
     (o.price)*(o.quantity)          as line_item_revenue,
     o.line_total_discount           as line_total_discount,
+    sum(o.quantity) over (partition by o.order_id) as units_in_order,
     ((o.price)*(o.quantity) - o.line_total_discount ) as line_item_gross_revenue,
     p.category                      as product_category,
     p.title                         as product_title, 
