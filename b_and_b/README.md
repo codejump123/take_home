@@ -7,39 +7,37 @@ Try running the following commands:
 - dbt clean (just to be safe)
 - dbt deps ( to build metric package)
 - dbt run -- full-refresh
-\n to view documentation
+
+### To view documentation
 - dbt docs generate
 - dbt docs serve
 (dbt docs will open in browser)
 
 
 
+### INTRO TO MODEL
+
 There are two stage models which analysts won't require - stg_orders.sql and stg_products.
 Both models are set up as incremental models with merge incremental_stragey. 
 
 #### stg_orders.sql
-stg_orders.sql model only contains the latest record ( identified by the latest _loaded_at timestamp ) for each order_id in source orders table. 
-To maintain uniqueness in each row (due to repeated record), i've created a new id field 
-by concatentating order_id, created_at, line_id, product_id, and variant_id. This field ensures uniuqeness for each row in the table, and the same field is used as unique key value for incremental strategy. 
+>  stg_orders.sql model only contains the latest record ( identified by the latest _loaded_at timestamp ) for each order_id in source orders table. To maintain uniqueness in each row (due to repeated record), i've created a new id field by concatentating order_id, created_at, line_id, product_id, and variant_id. This field ensures uniuqeness for each row in the table, and the same field is used as unique key value for incremental strategy. 
 
 #### stg_product.sql
-stg_product.sql model only contains the latest record ( identified by the latest _loaded_at timestamp ) for each product_id in source product table. 
-To maintain uniqueness in each row (due to repeated record), i've created a new id field 
-by concatentating _id(product id), variant_id, and sku. This field ensures uniuqeness for each row in the table, and the same field is used as unique key value for incremental strategy. 
+> stg_product.sql model only contains the latest record ( identified by the latest _loaded_at timestamp ) for each product_id in source product table. To maintain uniqueness in each row (due to repeated record), i've created a new id field by concatentating _id(product id), variant_id, and sku. This field ensures uniuqeness for each row in the table, and the same field is used as unique key value for incremental strategy. 
 
-### stg_web_events_unique_session_id.sql
-stg_web_events_unique_session_id.sql is also a staging model where some basic tranformations
-to source data table web_events is done to create unique session_ids for each event based on provided requirement 
->  a ‘session’ is defined as a series of one or more web events committed by the same cookie with no more than a 30 minute gap between events. Any 30 minute gap indicates a new session.
+#### stg_web_events_unique_session_id.sql
+> stg_web_events_unique_session_id.sql is also a staging model where some basic tranformations to source data table web_events is done to create unique session_ids for each event based on provided requirement 
+    a ‘session’ is defined as a series of one or more web events committed by the same cookie with no more than a 30 minute gap between events. Any 30 minute gap indicates a new session.
 
 
 ### Presentation Tables
 
-1) product_order.sql
-   obtained by performing left join stg_product on stg_orders table using product_id and variant_id. Some data transformations are done fulfill analysts's requriements described in the assignment. 
+#### 1) product_order.sql
+    obtained by performing left join stg_product on stg_orders table using product_id and variant_id. Some data transformations are done fulfill analysts's requriements described in the assignment. 
 
-3) web_session_final.sql
-   This model is based on stg_web_events_unique_session_id.sql and performs few transformations to fulfill analysts's requriements described in the assignment. 
+#### 2) web_session_final.sql
+    This model is based on stg_web_events_unique_session_id.sql and performs few transformations to fulfill analysts's requriements described in the assignment. 
 
 ## documentation for metrics are provided using dbt metrics 
    All metrics included in part "Need the ability to report on the following metrics" 
