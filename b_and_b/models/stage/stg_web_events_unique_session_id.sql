@@ -9,18 +9,23 @@
 
 {{ 
     config(
-        materialized='table'
+        materialized='incremental',
+        unique_key = '_id',
+        incremental_strategy = 'merge'
     )
 }}
     select
     -- window function with sum to do cumulative sum as the id, concatentate to cookie_id to create a unique session id. 
     concat(cookie_id || '-' || cast(sum(new_event_boundary) over (partition by cookie_id order by timestamp) as string)) as session_id,
-    base.* EXCEPT (new_event_boundary)
+    base.* EXCEPT (new_event_boundary),
+    current_timestamp() as etl_loaded_at
     from (select
-            _id,
+            _id as event_id,
             _loaded_at,
-            cookie_id,
-            customer_id,
+            -- a lot of cookie ids have unnecessary \ and " characters. Using regex to remove these characeters from cookie id. 
+            REGEXP_REPLACE(cookie_id, r'\\|"', '') as cookie_id,
+            -- some values of customer_id are NaN - replacing these values with NULL
+            NULLIF(customer_id,'NaN') as customer_id,
             event_name,
             event_url,
             event_properties,
@@ -34,6 +39,10 @@
                 THEN 1 ELSE 0
             END AS  new_event_boundary
         from {{source('raw','web_events')}}
-    ) base ;
+    ) base 
+
+{% if is_incremental() %}
+where _loaded_at >= (select max(etl_loaded_at) from {{this}} )
+{% endif %}
 
 
