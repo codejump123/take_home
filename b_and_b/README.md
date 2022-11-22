@@ -1,4 +1,3 @@
-Welcome to your new dbt project!
 
 ### Using the b_and_b project
 

@@ -43,7 +43,7 @@ models:
     - name: line_total_discount
       description: total discount for a line_id in USD
 
-- name: stg_prodcut
+- name: stg_product
   description: Each row is unique based and identified by _id column that is created by combining fields product_id,variant_id, and sku (stock keeping unit)
 
   columns:
@@ -80,6 +80,7 @@ models:
 
 - name: product_order
   description: fact table with created by joining stg_orders with stg_product using product_id and variant_id
+
   columns:
     - name: id
       description: unique row identifier - created by  ombining fields order_id,line_item_id, created_at, product_id, and variant_id from stg_orders table
@@ -130,6 +131,7 @@ models:
 
 - name: stg_web_events_unique_session_id
   description: fact table with events data from web sessions. 
+
   columns:
     - name: session_id
       description: session_id associated to each web event_id. where a session is defined as a series of one or more web events committed by the same cookie with no more than a 30 minute gap between events. Any 30 minute gap indicates a new session.
@@ -162,6 +164,7 @@ models:
 
 - name: web_session_final
   description: fact table with events data from web sessions. 
+  
   columns:
     - name: session_id
       description: session_id associated to each web event_id. where a session is defined as a series of one or more web events committed by the same cookie with no more than a 30 minute gap between events. Any 30 minute gap indicates a new session.
@@ -201,11 +204,11 @@ models:
       description: boolean field to indicate whether a session had at least one event with event_name = 'product_viewed'. 
     - name: is_product_added_session
       description: boolean field to indicate whether a session includes a  'product_added' event. 
-    - name: 
+    - name: is_checkout_step_viewed_session
       description: boolean field to indicate whether a session includes a  'checkout_step_viewed' event. 
-    - name: 
+    - name: is_email_sign_up_session
       description: boolean field to indicate whether a session includes a  'email_sign_up' event. 
-    - name: 
+    - name: is_order_completed_order
       description: boolean field to indicate whether a session includes a  'order_completed' event. 
     - name: web_session_start_timestamp
       description: web session start timestamp (event_created_timestamp for a first event in a given session_id), value will be same for all event_ids belonging to a particular session id
