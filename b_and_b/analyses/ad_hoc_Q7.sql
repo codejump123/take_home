@@ -9,7 +9,7 @@ select session_id, event_id, event_properties, session_first_utm_source ,event_n
 
 orders as (
 select *
- from `data-recruiting`.`ae_data_challenge_v1_ipokharel`.`stg_orders`
+ from from {{ ref('stg_orders')}}
 -- only select events that are page vi
 ), 
 
