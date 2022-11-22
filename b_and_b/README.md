@@ -7,7 +7,7 @@ Try running the following commands:
 - dbt clean (just to be safe)
 - dbt deps ( to build metric package)
 - dbt run -- full-refresh
-to view documentation
+\n to view documentation
 - dbt docs generate
 - dbt docs serve
 (dbt docs will open in browser)
