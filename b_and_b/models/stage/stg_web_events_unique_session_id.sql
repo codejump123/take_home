@@ -10,7 +10,7 @@
 {{ 
     config(
         materialized='incremental',
-        unique_key = '_id',
+        unique_key = 'event_id',
         incremental_strategy = 'merge'
     )
 }}
